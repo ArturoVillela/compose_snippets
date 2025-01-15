@@ -17,9 +17,10 @@ class Helper {
                 6->nav.navigate("lazycolumn_example")
                 7->nav.navigate("dialog_example")
                 8->nav.navigate("scaffold_example")
-                9->nav.navigate("animation1_example")
+                9->nav.navigate("calendar_example")
+                10->nav.navigate("animation1_example")
 
-                else ->nav.navigate("buttons_example")
+                else -> {}
             }
         }
     }

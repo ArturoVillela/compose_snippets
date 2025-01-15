@@ -32,20 +32,28 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
+import androidx.compose.material3.rememberDatePickerState
+import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableIntStateOf
@@ -72,6 +80,8 @@ import com.firebaseapp.charlieandroidblog.composesnippets.Utils.Colors
 import com.firebaseapp.charlieandroidblog.composesnippets.Utils.Helper
 import com.firebaseapp.charlieandroidblog.composesnippets.Utils.LCOGetter
 import com.firebaseapp.charlieandroidblog.composesnippets.ViewModel.MyViewModel
+import java.time.Instant
+import java.time.ZoneId
 import kotlin.math.roundToInt
 
 class UI {
@@ -424,6 +434,55 @@ class UI {
             }
         }
     }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun calendarExample(nav: NavHostController){
+
+        val datePickerState = rememberDatePickerState()
+        var sheetState = remember { mutableStateOf(false) }
+        val selectDate = Instant.ofEpochMilli(datePickerState.selectedDateMillis ?: 0)
+            .atZone(ZoneId.systemDefault())
+            .toLocalDate()
+
+
+        Column (modifier = Modifier.fillMaxSize()){
+            getAppBar(nav,"Calendar Picker")
+            Column (modifier = Modifier.fillMaxSize().padding(10.dp)){
+                Button(
+                    onClick = { sheetState.value = true }
+                ) { Text(text = "Choose birthday date") }
+            }
+
+            if (sheetState.value)
+                BottomSheetDatePicker(
+                    state = datePickerState,
+                    onDismissRequest = { sheetState.value = false }
+                )
+        }
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun BottomSheetDatePicker(
+        state: DatePickerState,
+        sheetState: SheetState = rememberModalBottomSheetState(),
+        onDismissRequest: () -> Unit
+    ) {
+        ModalBottomSheet(
+            onDismissRequest = onDismissRequest,
+            sheetState = sheetState,
+            dragHandle = { BottomSheetDefaults.DragHandle() },
+        ) {
+            DatePicker(
+                state = state,
+                showModeToggle = false,
+                title = null,
+                headline = null
+            )
+        }
+    }
+
 
     @Composable
     fun animation1Example(nav:NavHostController){

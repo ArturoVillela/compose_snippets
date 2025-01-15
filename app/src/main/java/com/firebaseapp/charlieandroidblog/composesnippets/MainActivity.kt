@@ -59,6 +59,7 @@ fun init(){
         composable("lazycolumn_example"){ UI().lazycolumnExample(navController) }
         composable("dialog_example"){ UI().dialogboxExample(navController) }
         composable("scaffold_example"){ UI().scaffoldExample(navController) }
+        composable("calendar_example"){ UI().calendarExample(navController) }
         composable("animation1_example"){ UI().animation1Example(navController) }
     }
 
